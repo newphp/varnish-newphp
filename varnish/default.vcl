@@ -296,9 +296,9 @@ sub vcl_recv {
     # A valid discussion could be held on this line: do you really need to cache static files that don't cause load? Only if you have memory left.
     # Sure, there's disk I/O, but chances are your OS will already have these files in their buffers (thus memory).
     # Before you blindly enable this, have a read here: http://mattiasgeniar.be/2012/11/28/stop-caching-static-files/
-    if (req.url ~ "^[^?]*\.(bmp|css|doc|eot|gif|ico|jpe?g|js|less|pdf|png|rtf|swf|txt|woff|xml|zip)(\?.*)?$") {
+    if (req.url ~ "^[^?]*\.(bmp|css|doc|gif|ico|jpe?g|js|less|pdf|png|rtf|swf|txt|xml|zip)(\?.*)?$") {
         unset req.http.Cookie;
-        if (req.url ~ "^[^?]*\.(js|css|ico|gif|png|jpe?g|bmp|swf|xml)(\?.*)?$") {
+        if (req.url ~ "^[^?]*\.(js|css|ico|gif|png|jpe?g|bmp|swf|eot|ttf|woff|xml)(\?.*)?$") {
             set req.url = regsub(req.url, "\?.*$", "");
         }
         return(hash);
@@ -393,7 +393,7 @@ sub vcl_backend_response {
     # Enable cache for all static files
     # The same argument as the static caches from above: monitor your cache size, if you get data nuked out of it, consider giving up the static file cache.
     # Before you blindly enable this, have a read here: http://mattiasgeniar.be/2012/11/28/stop-caching-static-files/
-    if (bereq.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|gif|gz|ico|jpe?g|js|less|pdf|png|rar|rtf|swf|tar|tgz|txt|wav|woff|xml|zip)(\?.*)?$") {
+    if (bereq.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|gif|gz|ico|jpe?g|js|less|pdf|png|rar|rtf|swf|tar|tgz|ttf|txt|wav|woff|xml|zip)(\?.*)?$") {
         unset beresp.http.set-cookie;
     }
 
@@ -413,7 +413,7 @@ sub vcl_backend_response {
         set beresp.ttl = 2h;
     }
 
-    if (bereq.url ~ "^[^?]*\.(bmp|gif|ico|jpe?g|png|swf|xml|zip)(\?.*)?$") {
+    if (bereq.url ~ "^[^?]*\.(bmp|gif|ico|jpe?g|png|swf|eot|ttf|woff|xml|zip)(\?.*)?$") {
         set beresp.ttl = 30d;
     }
 
