@@ -296,9 +296,9 @@ sub vcl_recv {
     # A valid discussion could be held on this line: do you really need to cache static files that don't cause load? Only if you have memory left.
     # Sure, there's disk I/O, but chances are your OS will already have these files in their buffers (thus memory).
     # Before you blindly enable this, have a read here: http://mattiasgeniar.be/2012/11/28/stop-caching-static-files/
-    if (req.url ~ "^[^?]*\.(bmp|css|doc|gif|ico|jpe?g|js|less|pdf|png|rtf|swf|txt|xml|zip)(\?.*)?$") {
+    if (req.url ~ "^[^?]*\.(bmp|css|doc|gif|ico|jpe?g|js|less|pdf|png|rtf|swf|txt|eot|ttf|woff|xml|zip)(\?.*)?$") {
         unset req.http.Cookie;
-        if (req.url ~ "^[^?]*\.(js|css|ico|gif|png|jpe?g|bmp|swf|eot|ttf|woff|xml)(\?.*)?$") {
+        if (req.url ~ "^[^?]*\.(bmp|css|gif|ico|jpe?g|js|png|swf|txt|eot|ttf|woff|xml|zip)(\?.*)?$") {
             set req.url = regsub(req.url, "\?.*$", "");
         }
         return(hash);
