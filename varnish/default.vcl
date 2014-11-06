@@ -61,16 +61,6 @@ acl purge {
     "199.33.122.8/29";
 }
 
-acl editors {
-    # ACL to honor the "Cache-Control: no-cache" header to force a refresh but only from selected IPs
-    "localhost";
-    "127.0.0.1";
-    "::1";
-    "106.185.45.193";
-    "96.126.101.136";
-    "199.33.122.8/29";
-}
-
 sub vcl_init {
     # Called when VCL is loaded, before any requests pass through it. Typically used to initialize VMODs.
     # new vdir = directors.round_robin();
@@ -274,15 +264,6 @@ sub vcl_recv {
             set req.http.Accept-Encoding = "deflate";
         } else {
             unset req.http.Accept-Encoding;
-        }
-    }
-
-    if (req.http.Cache-Control ~ "(?i)no-cache" && client.ip ~ editors) { # create the acl editors if you want to restrict the Ctrl-F5
-        # http://varnish.projects.linpro.no/wiki/VCLExampleEnableForceRefresh
-        # Ignore requests via proxy caches and badly behaved crawlers
-        # like msnbot that send no-cache with every request.
-        if (! (req.http.Via || req.http.User-Agent ~ "(?i)bot" || req.http.X-Purge)) {
-            set req.hash_always_miss = true;
         }
     }
 
