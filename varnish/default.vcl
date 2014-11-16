@@ -94,10 +94,9 @@ sub vcl_recv {
     if (req.http.host == "sd.3cdn.com") {
         set req.backend_hint = google_cloud_storage;
         ## varnish hotlink
-        if (!(req.http.referer ~ "http://.*\.showsday\.com/" ||
+        if (!(req.http.referer ~ "http://(.*\.)?showsday\.com/" ||
             req.http.referer ~ "http://sd\.3cdn\.com/" ||
-            req.http.referer ~ "http://.*\.seriestime\.com/" ||
-            req.http.referer ~ "http://.*\.uu8u\.net/") &&
+            req.http.referer ~ "http://(.*\.)?seriestime\.com/") &&
             req.http.referer &&
             req.url ~ "^[^\?]+\.(jpe?g|png|gif)$")
         {
@@ -107,10 +106,9 @@ sub vcl_recv {
     if (req.http.host == "sd.3cdn.com") {
         set req.backend_hint = google_cloud_storage;
         ## varnish hotlink
-        if (!(req.http.referer ~ "http://.*\.showsday\.com/" ||
+        if (!(req.http.referer ~ "http://(.*\.)?showsday\.com/" ||
             req.http.referer ~ "http://sd\.3cdn\.com/" ||
-            req.http.referer ~ "http://.*\.seriestime\.com/" ||
-            req.http.referer ~ "http://.*\.uu8u\.net/") &&
+            req.http.referer ~ "http://(.*\.)?seriestime\.com/") &&
             req.http.referer &&
             req.url ~ "^[^\?]+\.(jpe?g|png|gif)$")
         {
@@ -121,9 +119,8 @@ sub vcl_recv {
         set req.backend_hint = google_cloud_storage;
         set req.http.host = "sd.3cdn.com";
         ## varnish hotlink
-        if (!(req.http.referer ~ "http://.*\.seriestime\.com/" ||
-            req.http.referer ~ "http://st\.3cdn\.com/" ||
-            req.http.referer ~ "http://.*\.uu8u\.net/") &&
+        if (!(req.http.referer ~ "http://(.*\.)?seriestime\.com/" ||
+            req.http.referer ~ "http://st\.3cdn\.com/") &&
             req.http.referer &&
             req.url ~ "^[^\?]+\.(jpe?g|png|gif)$")
         {
@@ -152,9 +149,8 @@ sub vcl_recv {
         set req.backend_hint = OVHCDN;
         set req.http.host = "fts.3cdn.com";
         ## varnish hotlink
-        if (!(req.http.referer ~ "http://.*\.freetubespot\.com/" ||
-            req.http.referer ~ "http://fts\.3cdn\.com/" ||
-            req.http.referer ~ "http://.*\.uu8u\.net/") &&
+        if (!(req.http.referer ~ "http://(.*\.)?freetubespot\.com/" ||
+            req.http.referer ~ "http://fts\.3cdn\.com/") &&
             req.http.referer &&
             req.url ~ "^[^\?]+\.(jpe?g|png|gif)$") {
             return(synth(403));
